@@ -1,0 +1,8 @@
+{
+  "heading": "Please log in to continue",
+  "username": "Username",
+  "username_placeholder": "Enter your username",
+  "password": "Password",
+  "password_placeholder": "Enter password",
+  "login_btn": "Login"
+}
