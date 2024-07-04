@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowRightIcon } from "@heroicons/react/16/solid";
 import { lusitana } from "@/ui/fonts";
 import { useTranslation } from "../i18n/index";
 import { Params } from "@/db/interfaces/params";
 import { LangSwitcher } from "@/components/lang-switcher";
+import Image from "next/image";
 
 export default async function Home({ params: { lng } }: Params) {
   const { t } = await useTranslation(lng);
@@ -17,14 +17,14 @@ export default async function Home({ params: { lng } }: Params) {
           width={200}
           height={200}
           className="hidden md:block"
-          alt="Screenshots of the dashboard project showing desktop version"
+          alt="Logo"
         />
         <Image
           src="/media/header-logo.png"
           width={150}
           height={150}
           className="block md:hidden"
-          alt="Screenshots of the dashboard project showing desktop version"
+          alt="Logo"
         />
       </div>
       <div className="mt-4 flex grow flex-col gap-4 md:flex-row">
@@ -53,14 +53,14 @@ export default async function Home({ params: { lng } }: Params) {
             width={1000}
             height={760}
             className="hidden md:block"
-            alt="Screenshots of the dashboard project showing desktop version"
+            alt="Image for presentation"
           />
           <Image
             src="/media/main.jpg"
             width={560}
             height={620}
             className="block md:hidden"
-            alt="Screenshots of the dashboard project showing desktop version"
+            alt="Image for presentation"
           />
         </div>
       </div>

@@ -22,11 +22,13 @@ export function middleware(req: any) {
   if (!lng) lng = acceptLanguage.get(req.headers.get("Accept-Language"));
   if (!lng) lng = fallbackLng;
 
-  // Redirect if lng in path is not supported
   if (
     !languages.some((loc: any) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&
-    !req.nextUrl.pathname.startsWith("/_next")
+    !req.nextUrl.pathname.startsWith("/_next") &&
+    !req.nextUrl.pathname.startsWith("/media")
   ) {
+    console.log(req.nextUrl.pathname);
+    console.log(req.url);
     return NextResponse.redirect(
       new URL(`/${lng}${req.nextUrl.pathname}`, req.url)
     );

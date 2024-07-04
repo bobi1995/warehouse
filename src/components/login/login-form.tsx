@@ -1,4 +1,5 @@
 "use client";
+import { useState, useEffect } from "react";
 import { lusitana } from "@/ui/fonts";
 import {
   AtSymbolIcon,
@@ -11,9 +12,26 @@ import { useFormState, useFormStatus } from "react-dom";
 import { MainButton } from "../main-button";
 import { useTranslation } from "@/app/i18n";
 
-export default async function LoginForm({ lng }: { lng: string }) {
+export default function LoginForm({ lng }: { lng: string }) {
   const [errorMessage, dispatch] = useFormState(authenticate, undefined);
-  const { t } = await useTranslation(lng, "login");
+  const [t, setT] = useState<any>(null);
+
+  useEffect(() => {
+    async function fetchTranslation() {
+      const { t } = await useTranslation(lng, "login");
+      setT(() => t);
+    }
+    fetchTranslation();
+  }, [lng]);
+
+  if (!t) {
+    return (
+      <div className="flex justify-center items-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-t-2 border-b-2 border-main-300"></div>
+      </div>
+    );
+  }
+
   return (
     <form action={dispatch} className="space-y-3">
       <div className="flex-1 rounded-lg bg-gray-50 px-6 pb-4 pt-8">
@@ -80,7 +98,6 @@ export default async function LoginForm({ lng }: { lng: string }) {
 
 function LoginButton({ text }: { text: string }) {
   const { pending } = useFormStatus();
-
   return (
     <MainButton className="mt-4 w-full" aria-disabled={pending}>
       {text}
