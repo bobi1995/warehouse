@@ -1,0 +1,17 @@
+{
+  "username": "Потребител",
+  "editUser": "Редактирай Потребител",
+  "createdAt": "Създаден на",
+  "edit": "Редактирай",
+  "delete": "Изтрий",
+  "close": "Затвори",
+  "delete_question": "Сигурни ли сте, че искате да изтриете потребител",
+  "username_placeholder": "Въведи потребителско име",
+  "password": "Парола",
+  "password_placeholder": "Въведи парола",
+  "login_btn": "Влез",
+  "email": "Имейл",
+  "email_placeholder": "Въведи имейл",
+  "name": "Име",
+  "name_placeholder": "Въведи име"
+}

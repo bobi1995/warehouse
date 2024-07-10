@@ -1,0 +1,17 @@
+{
+  "username": "Username",
+  "editUser": "Edit User",
+  "createdAt": "Created At",
+  "edit": "Edit",
+  "delete": "Delete",
+  "close": "Close",
+  "delete_question": "Are you sure you want to delete user",
+  "username_placeholder": "Enter your username",
+  "password": "Password",
+  "password_placeholder": "Enter password",
+  "login_btn": "Login",
+  "email": "Email",
+  "email_placeholder": "Enter email",
+  "name": "Name",
+  "name_placeholder": "Enter name"
+}

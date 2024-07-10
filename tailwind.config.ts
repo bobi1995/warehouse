@@ -19,6 +19,14 @@ const config: Config = {
           200: "#1996C2",
           300: "#157FA4",
         },
+        btn_green: {
+          hover: "#AFE1AF",
+          normal: "#50C878",
+        },
+        btn_red: {
+          hover: "#ff9999",
+          normal: "#cc0000",
+        },
       },
     },
   },
