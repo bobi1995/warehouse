@@ -17,10 +17,10 @@ export const config = {
 
 export function middleware(req: any) {
   let lng;
-  if (req.cookies.has(cookieName))
-    lng = acceptLanguage.get(req.cookies.get(cookieName).value);
-  if (!lng) lng = acceptLanguage.get(req.headers.get("Accept-Language"));
-  if (!lng) lng = fallbackLng;
+
+  if (!lng) {
+    lng = fallbackLng;
+  }
 
   if (
     !languages.some((loc: any) => req.nextUrl.pathname.startsWith(`/${loc}`)) &&

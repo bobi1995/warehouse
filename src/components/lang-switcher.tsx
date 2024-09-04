@@ -19,6 +19,7 @@ export const LangSwitcher = () => {
     );
     if (selectedLanguage) {
       const newPath = pathname.replace(`/${lng}`, `/${selectedLanguage}`);
+      localStorage.setItem("lng", selectedLanguage);
       router.push(newPath);
     }
   };

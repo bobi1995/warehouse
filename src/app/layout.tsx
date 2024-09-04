@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "LestoSoft System",
-  description: "Inspired by LestoSoft",
+  title: "Sheet Metal Warehouse",
+  description: "Created by Borislav Stefanov",
 };
 
 export default function RootLayout({
