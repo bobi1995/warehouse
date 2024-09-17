@@ -4,44 +4,6 @@ import prisma from "../prismaClient";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 const ITEMS_PER_PAGE = 10;
 
-// import { faker } from "@faker-js/faker";
-
-// const generateRandomUsers = async (numberOfUsers: number) => {
-//   const users = [];
-
-//   for (let i = 0; i < numberOfUsers; i++) {
-//     const username = faker.internet.userName();
-//     const password = faker.internet.password();
-//     const hashedPassword = await bcrypt.hash(password, 10);
-//     const name = faker.name.fullName();
-//     const email = faker.internet.email();
-
-//     users.push({
-//       username,
-//       password: hashedPassword,
-//       name,
-//       email,
-//     });
-//   }
-
-//   return users;
-// };
-
-// export const createUsers = async () => {
-//   const users = await generateRandomUsers(30);
-
-//   try {
-//     await prisma.user.createMany({
-//       data: users,
-//     });
-//     console.log(`30 users created successfully.`);
-//   } catch (error) {
-//     console.error("Error creating users:", error);
-//   } finally {
-//     await prisma.$disconnect();
-//   }
-// };
-
 export async function createUser({
   username,
   password,

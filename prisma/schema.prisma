@@ -16,11 +16,11 @@ model User {
   username      String          @unique
   name          String?
   email         String?         @unique
+  admin         Boolean         @default(false)
   accounts      Account[]
   sessions      Session[]
-  // Optional for WebAuthn support
   Authenticator Authenticator[]
-
+  transactions  Transaction[]  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -80,4 +80,69 @@ model Authenticator {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([userId, credentialID])
+}
+
+
+
+model Material {
+  id        Int       @id @default(autoincrement())
+  name      String
+  createdAt DateTime  @default(now())
+
+  inventories Inventory[]
+}
+
+
+model Inventory {
+  id            Int       @id @default(autoincrement())
+  materialId    Int
+  stillageId    Int
+  cellId        Int
+  lot           String
+  order         String
+  quan_dev      Int @default(0)
+  quan_ok       Int @default(0)
+  comment       String?
+  desc          String?
+  deliveryDate  DateTime @default(now())
+  inboundDate   DateTime @default(now())
+
+  material      Material   @relation(fields: [materialId], references: [id], onDelete: Cascade)
+  stillage      Stillage   @relation(fields: [stillageId], references: [id], onDelete: Cascade)
+  cell          Cell       @relation(fields: [cellId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+}
+
+model Stillage {
+  id       Int       @id @default(autoincrement())
+  name     String
+  shelves  Int
+  columns  Int
+  cells    Cell[]
+  inventories Inventory[]
+}
+
+model Cell {
+  id          Int       @id @default(autoincrement())
+  stillageId  Int
+  code        String
+  size_x      Float
+  size_y      Float
+  size_z      Float
+  max_weight  Float
+  isolator    Boolean
+
+  stillage    Stillage  @relation(fields: [stillageId], references: [id], onDelete: Cascade)
+  inventories Inventory[]
+}
+
+model Transaction {
+  id          String    @id @default(cuid())
+  type        String
+  inventoryId Int
+  userId      String
+  date        DateTime  @default(now())
+
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

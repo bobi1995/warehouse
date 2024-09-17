@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/16/solid";
 import { useState, useEffect } from "react";
 import { useTranslation } from "@/app/i18n";
-import { updateUser } from "@/lib/actions/userAction";
+import { updateUser } from "@/lib/userActions/userAction";
 import { useRouter } from "next/navigation";
 
 interface UserEditInterface {

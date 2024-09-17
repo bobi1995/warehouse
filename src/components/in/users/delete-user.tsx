@@ -3,7 +3,7 @@ import { XCircleIcon } from "@heroicons/react/16/solid";
 import { useState, useEffect } from "react";
 import { useTranslation } from "@/app/i18n";
 import { usePathname } from "next/navigation";
-import { deleteUser } from "@/lib/actions/userAction";
+import { deleteUser } from "@/lib/userActions/userAction";
 import { useRouter } from "next/navigation";
 
 const DeleteUser = ({ id, username }: { id: string; username: string }) => {

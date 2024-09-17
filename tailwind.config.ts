@@ -15,9 +15,8 @@ const config: Config = {
       },
       colors: {
         main: {
-          100: "#1DB5E6",
-          200: "#1996C2",
-          300: "#157FA4",
+          100: "#BC2227",
+          200: "#E7878C",
         },
         btn_green: {
           hover: "#AFE1AF",

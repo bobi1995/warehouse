@@ -1,5 +1,5 @@
 import React from "react";
-import { getCountQueryUsers, getUsers } from "@/lib/actions/userAction";
+import { getCountQueryUsers, getUsers } from "@/lib/userActions/userAction";
 import EditUser from "./edit-user";
 import { useTranslation } from "@/app/i18n";
 import DeleteUser from "./delete-user";

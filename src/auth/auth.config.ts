@@ -12,7 +12,7 @@ export const authConfig = {
     },
     async redirect({ url, baseUrl }) {
       const lng = url.split("/");
-      if (url.endsWith("/login")) return `${baseUrl}/${lng[3]}/in`;
+      if (url.endsWith("/login")) return `${baseUrl}/${lng[3]}`;
       else if (new URL(url).origin === baseUrl) return url;
       return baseUrl;
     },
