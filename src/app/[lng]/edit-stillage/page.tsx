@@ -3,12 +3,14 @@ import React from "react";
 import { table, thead } from "@/ui/table-style";
 import { Stillage } from "@/db/interfaces/types";
 import CellBtn from "@/components/in/edit-stillage/cell-btn";
+import PageBackComponent from "@/components/general/page_back";
+import EditBtn from "@/components/in/edit-stillage/edit-btn";
 
 const EditStillagePage = async () => {
   const stillages = await getStillages();
-  console.log(stillages);
   return (
     <div>
+      <PageBackComponent />
       <h1 className="text-2xl font-semibold text-center mt-10">
         Всички Стелажи
       </h1>
@@ -27,6 +29,9 @@ const EditStillagePage = async () => {
             <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
               Клетки
             </th>
+            <th scope="col" className="px-4 py-5 font-medium sm:pl-6">
+              Редактирай
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +45,16 @@ const EditStillagePage = async () => {
                   shelves={stillage.shelves}
                   columns={stillage.columns}
                   name={stillage.name}
+                  stillageId={stillage.id}
+                  cells={stillage.cells}
+                />
+              </td>
+              <td className="px-4 py-4 sm:pl-6">
+                <EditBtn
+                  name={stillage.name}
+                  stillageId={stillage.id}
+                  shelves={stillage.shelves}
+                  columns={stillage.columns}
                 />
               </td>
             </tr>

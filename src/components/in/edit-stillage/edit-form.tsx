@@ -4,14 +4,26 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { PlusCircleIcon } from "@heroicons/react/24/solid";
 
-const CreateStillageForm = () => {
-  const [name, setName] = useState("");
-  const [columns, setColumns] = useState(1);
-  const [shelves, setShelves] = useState(1);
+interface EditStillageProps {
+  name: string;
+  stillageId: number;
+  shelves: number;
+  columns: number;
+}
+
+const EditStillageForm: React.FC<EditStillageProps> = ({
+  name,
+  stillageId,
+  shelves,
+  columns,
+}) => {
+  const [newName, setNewName] = useState(name);
+  const [newColumns, setNewColumns] = useState(columns);
+  const [newShelves, setNewShelves] = useState(shelves);
   const router = useRouter();
 
   const handleCreate = async () => {
-    await createStillage({ name, columns, shelves });
+    //await createStillage({ name, columns, shelves });
     router.refresh();
   };
 
@@ -31,8 +43,8 @@ const CreateStillageForm = () => {
             name="name"
             placeholder="Име на стелажа"
             required
-            defaultValue={name}
-            onChange={(e) => setName(e.target.value)}
+            defaultValue={newName}
+            onChange={(e) => setNewName(e.target.value)}
           />
         </div>
         <div className="flex mb-3 items-center">
@@ -50,8 +62,8 @@ const CreateStillageForm = () => {
             required
             min="1"
             type="number"
-            defaultValue={columns}
-            onChange={(e) => setColumns(parseInt(e.target.value))}
+            defaultValue={newColumns}
+            onChange={(e) => setNewColumns(parseInt(e.target.value))}
           />
         </div>
         <div className="flex mb-3 items-center">
@@ -69,8 +81,8 @@ const CreateStillageForm = () => {
             required
             min="1"
             type="number"
-            defaultValue={shelves}
-            onChange={(e) => setShelves(parseInt(e.target.value))}
+            defaultValue={newShelves}
+            onChange={(e) => setNewShelves(parseInt(e.target.value))}
           />
         </div>
         <button
@@ -85,4 +97,4 @@ const CreateStillageForm = () => {
   );
 };
 
-export default CreateStillageForm;
+export default EditStillageForm;
