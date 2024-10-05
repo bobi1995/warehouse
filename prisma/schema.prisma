@@ -86,9 +86,12 @@ model Authenticator {
 
 model Material {
   id        Int       @id @default(autoincrement())
-  name      String
-  createdAt DateTime  @default(now())
-
+  size_length Float
+  size_height Float
+  size_width  Float
+  weight    Float
+  type      String
+  lesto_code String @unique
   inventories Inventory[]
 }
 
@@ -126,9 +129,9 @@ model Cell {
   id          Int       @id @default(autoincrement())
   stillageId  Int
   code        String
-  size_x      Float
-  size_y      Float
-  size_z      Float
+  size_length Float
+  size_height Float
+  size_width  Float
   max_weight  Float
   isolator    Boolean
 

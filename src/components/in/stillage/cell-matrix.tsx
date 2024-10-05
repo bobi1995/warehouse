@@ -10,8 +10,13 @@ interface CellMatrixProps {
   cells: Cell[];
 }
 
-const isSelected = (row: number, col: number, selectedCells: Set<String>) => {
-  return selectedCells.has(`${row}-${col}`);
+const isSelected = (
+  row: number,
+  col: number,
+  selectedCells: { code: string; id?: number }[]
+) => {
+  const cellCode = `${row}-${col}`;
+  return selectedCells.some((cell) => cell.code === cellCode);
 };
 
 const isExistingCell = (
@@ -58,19 +63,25 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
 
   const [grid, setGrid] = useState<Cell[][]>(populatedGrid);
 
-  const [selectedCells, setSelectedCells] = useState<Set<string>>(new Set());
+  const [selectedCells, setSelectedCells] = useState<
+    { code: string; id?: number }[]
+  >([]);
   const existingCellCodes = new Set(cells.map((cell) => cell.code));
 
-  const handleCellClick = (row: number, col: number) => {
-    const cellKey = `${row}-${col}`;
+  const handleCellClick = (row: number, col: number, id?: number) => {
+    const cellCode = `${row}-${col}`;
     setSelectedCells((prevSelectedCells) => {
-      const updatedSelection = new Set(prevSelectedCells);
-      if (updatedSelection.has(cellKey)) {
-        updatedSelection.delete(cellKey);
+      const existingCellIndex = prevSelectedCells.findIndex(
+        (cell) => cell.code === cellCode
+      );
+
+      if (existingCellIndex >= 0) {
+        const updatedSelection = [...prevSelectedCells];
+        updatedSelection.splice(existingCellIndex, 1);
+        return updatedSelection;
       } else {
-        updatedSelection.add(cellKey);
+        return [...prevSelectedCells, { code: cellCode, id }];
       }
-      return updatedSelection;
     });
   };
 
@@ -82,14 +93,16 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
   }, [cells]);
 
   return (
-    <div>
+    <div className="w-full mt-3">
       <div
         style={{
           display: "grid",
           gridTemplateColumns: `repeat(${columns}, 100px)`,
           gap: "10px",
           marginBottom: "10px",
+          textAlign: "center",
         }}
+        className="w-full flex justify-center"
       >
         {headerLabels.map((label, index) => (
           <div
@@ -112,6 +125,7 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
             gridTemplateRows: `repeat(${shelves}, 100px)`,
             gap: "10px",
           }}
+          className="w-full flex justify-center"
         >
           {grid.flat().map((cell, index) => {
             const rowIndex = Math.floor(index / columns);
@@ -127,10 +141,11 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
               existingCellCodes
             );
 
+            const cellId = cell.id;
             return (
               <button
                 key={`${rowIndex}-${colIndex}`}
-                onClick={() => handleCellClick(rowIndex, colIndex)}
+                onClick={() => handleCellClick(rowIndex, colIndex, cellId)}
                 className={`text-center tems-center justify-center  border ${
                   isCellSelected
                     ? "bg-green-200"
@@ -145,7 +160,7 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
                 {cellExists && (
                   <div>
                     <p>
-                      {cell.size_x}x{cell.size_y}x{cell.size_z}
+                      {cell.size_length}x{cell.size_height}x{cell.size_width}
                     </p>
                     <p>{cell.max_weight}кг</p>
                   </div>
@@ -154,7 +169,7 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
             );
           })}
         </div>
-        {selectedCells.size > 0 && (
+        {selectedCells.length > 0 && (
           <CellForm selectedCells={selectedCells} stillageId={stillageId} />
         )}
       </div>

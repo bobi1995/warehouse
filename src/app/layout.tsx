@@ -25,7 +25,8 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} bg-fullscreen`}>
+        {" "}
         <div className="m-3 flex h-20 shrink-0 items-center rounded-lg p-4 justify-between  bg-main-100 md:h-24">
           <Image
             src="/media/white-logo.png"

@@ -5,11 +5,21 @@ export interface CreateStillage {
 }
 
 export interface CreateCell {
-  x: number;
-  y: number;
-  z: number;
+  size_length: number;
+  size_height: number;
+  size_width: number;
   max_weight: number;
   isolator: boolean;
   stillageId: number;
   code: string;
+  id?: number;
+}
+
+export interface CreateMaterial {
+  type: string;
+  size_length: number;
+  size_height: number;
+  size_width: number;
+  weight: number;
+  lesto_code: string;
 }

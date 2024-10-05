@@ -2,7 +2,27 @@
 @tailwind components;
 @tailwind utilities;
 
-/* For cutting edges and adding border */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+.bg-dots {
+  background-image: radial-gradient(circle, #ccc 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.bg-fullscreen {
+  background-image: url("../../public/media/bg3.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: rgba(255, 255, 255, 0.6);
+  background-blend-mode: overlay;
+  background-attachment: fixed;
+}
+
 .clip-trapezoid {
   position: relative;
   width: 24rem;

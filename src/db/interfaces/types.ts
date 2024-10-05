@@ -47,8 +47,12 @@ export interface Inventory {
 
 export interface Material {
   id: number;
-  name: string;
-  createdAt: string;
+  size_length: number;
+  size_height: number;
+  size_width: number;
+  weight: number;
+  type: string;
+  lesto_code: string;
   inventories: Inventory[];
 }
 
@@ -56,9 +60,9 @@ export interface Cell {
   id: number;
   stillageId: number;
   code: string;
-  size_x: number;
-  size_y: number;
-  size_z: number;
+  size_length: number;
+  size_height: number;
+  size_width: number;
   max_weight: number;
   isolator: boolean;
 }

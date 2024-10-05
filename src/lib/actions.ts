@@ -21,6 +21,6 @@ export async function authenticate(
     if (isRedirectError(error)) {
       throw error;
     }
-    throw error;
+    throw new Error("LOGIN_FAILED");
   }
 }
