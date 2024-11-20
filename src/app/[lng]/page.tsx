@@ -18,7 +18,7 @@ export default async function Home({ params: { lng } }: Params) {
             ) : null}
           </div>
           <div className="flex flex-col items-center w-full">
-            <ScreenBtn title="Справка и редакция" href="/edit" />
+            <ScreenBtn title="Справка и редакция" href="/reference" />
             <ScreenBtn title="Ръчно етикиране" href="/labeling" />
             <ScreenBtn title="История операции" href="/history" />
             {session ? <ScreenBtn title="Материали" href="/material" /> : null}

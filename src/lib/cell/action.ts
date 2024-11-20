@@ -45,6 +45,7 @@ export async function createCells(cells: CreateCell[]) {
         });
       }
     }
+    revalidatePath("/stillage");
     return { success: true, code: "CELL_SUCCESS" };
   } catch (error) {
     throw new Error("CELL_CREATE_FAILED");

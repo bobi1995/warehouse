@@ -17,5 +17,6 @@ export const authConfig = {
       return baseUrl;
     },
   },
+
   providers: [],
 } satisfies NextAuthConfig;

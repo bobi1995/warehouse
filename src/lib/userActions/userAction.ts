@@ -4,14 +4,14 @@ import prisma from "../prismaClient";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 const ITEMS_PER_PAGE = 10;
 
-export async function createUser({
-  username,
-  password,
-  name,
-  email,
-  image,
-}: any) {
+export async function createUser(formData: FormData) {
   try {
+    const username = formData.get("username") as string;
+    const password = formData.get("password") as string;
+    const name = formData.get("name") as string;
+    const email = formData.get("email") as string;
+    const admin = formData.get("admin") as string;
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await prisma.user.create({
@@ -20,12 +20,14 @@ export async function createUser({
         password: hashedPassword,
         name,
         email,
+        admin: admin === "Yes" ? true : false,
       },
     });
 
+    revalidatePath("/users");
     return user;
   } catch (error) {
-    throw new Error("Unable to create user");
+    throw new Error("USER_CREATE_FAILED");
   }
 }
 

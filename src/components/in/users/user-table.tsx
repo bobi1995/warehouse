@@ -17,6 +17,7 @@ const UserTable = async ({
   const users = await getUsers(query, currentPage);
   const usersCount = await getCountQueryUsers(query);
   const { t } = await useTranslation(lng, "user");
+
   return (
     <>
       <SearchUser placeholder="" />

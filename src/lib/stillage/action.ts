@@ -1,11 +1,13 @@
 "use server";
 import prisma from "../prismaClient";
 import { CreateStillage } from "@/db/interfaces/create-types";
+import { revalidatePath } from "next/cache";
 
 export async function createStillage({
   name,
   columns,
   shelves,
+  type,
 }: CreateStillage) {
   try {
     const stillage = await prisma.stillage.create({
@@ -13,8 +15,10 @@ export async function createStillage({
         name,
         columns,
         shelves,
+        type,
       },
     });
+    revalidatePath("/stillage");
 
     return stillage;
   } catch (error) {
@@ -24,7 +28,7 @@ export async function createStillage({
 
 export async function editStillage(data: CreateStillage & { id: number }) {
   try {
-    const { name, columns, shelves, id } = data;
+    const { name, columns, shelves, id, type } = data;
 
     const existingStillage = await prisma.stillage.findUnique({
       where: { id },
@@ -58,9 +62,8 @@ export async function editStillage(data: CreateStillage & { id: number }) {
 
       // If there are any inventories, throw an error
       if (cellsWithInventory.length > 0) {
-        console.log("here");
         throw new Error(
-          `MANUAL:Невъзможна редакция.В следните клетки има материали: ${cellsWithInventory
+          `Невъзможна редакция.В следните клетки има материали: ${cellsWithInventory
             .map((inv) => inv.cellId)
             .join(", ")}`
         );
@@ -80,12 +83,48 @@ export async function editStillage(data: CreateStillage & { id: number }) {
         name,
         columns,
         shelves,
+        type,
       },
     });
+    revalidatePath("/stillage");
 
     return stillage;
   } catch (error: any) {
     const errorMessage = error?.message || "STILAGE_EDIT_FAILED";
+    throw new Error(errorMessage);
+  }
+}
+
+export async function deleteStillage(id: number) {
+  try {
+    const stillageWithInventories = await prisma.stillage.findUnique({
+      where: { id: id },
+      include: {
+        inventories: true,
+      },
+    });
+
+    if (!stillageWithInventories) {
+      throw new Error(`STILLAGE_NOT_FOUND`);
+    }
+    if (stillageWithInventories?.inventories.length > 0) {
+      throw new Error(`STILLAGE_NOT_EMPTY`);
+    }
+
+    const deletedStillage = await prisma.stillage.delete({
+      where: {
+        id: id,
+      },
+    });
+    revalidatePath("/stillage");
+
+    return {
+      success: true,
+      message: `Stillage with ID ${id} deleted successfully.`,
+      deletedStillage,
+    };
+  } catch (error: any) {
+    const errorMessage = error?.message || "STILAGE_DELETE_FAILED";
     throw new Error(errorMessage);
   }
 }

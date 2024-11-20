@@ -8,17 +8,19 @@ interface EditBtnProps {
   stillageId: number;
   shelves: number;
   columns: number;
+  type: string;
 }
 const EditBtn: React.FC<EditBtnProps> = ({
   name,
   stillageId,
   shelves,
   columns,
+  type,
 }) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger asChild>
-        <button className="flex  m-auto px-4 py-2 bg-main-100 text-white rounded  hover:bg-main-200">
+        <button className="flex   px-4 py-2 bg-main-100 text-white rounded  hover:bg-main-200">
           <PencilSquareIcon className="w-6 h-6" />
         </button>
       </Dialog.Trigger>
@@ -38,6 +40,7 @@ const EditBtn: React.FC<EditBtnProps> = ({
               columns={columns}
               name={name}
               stillageId={stillageId}
+              type={type}
             />
           </div>
 

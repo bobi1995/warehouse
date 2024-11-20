@@ -18,7 +18,7 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
   };
 
   return (
-    <>
+    <div className="text-center my-5">
       <div className="inline-flex">
         <PaginationArrow
           direction="left"
@@ -53,7 +53,7 @@ const Pagination = ({ totalPages }: { totalPages: number }) => {
           isDisabled={currentPage >= totalPages}
         />
       </div>
-    </>
+    </div>
   );
 };
 

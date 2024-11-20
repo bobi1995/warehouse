@@ -4,8 +4,8 @@ export interface User {
   username: string;
   name: string;
   email: string;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Stillage {
@@ -13,24 +13,28 @@ export interface Stillage {
   name: string;
   shelves: number;
   columns: number;
-  cells: Cell[];
-  inventories: Inventory[];
+  type: string;
+  cells?: Cell[];
+  inventories?: Inventory[];
 }
 export interface Transaction {
   id: number;
   type: string;
-  inventoryId: number;
+  inventoryId?: number | null;
   userId: string;
-  date: string;
-  inventory: Inventory;
-  user: User;
+  date: Date;
+  quantity: number;
+  inventory?: Inventory;
+  user?: User;
+  material?: Material;
 }
 
 export interface Inventory {
   id: number;
   materialId: number;
-  stillageId: number;
-  cellId: number;
+  stillageId?: number | null;
+  storageId?: number | null;
+  cellId?: number | null;
   lot: string;
   order: string;
   quan_dev: number;
@@ -39,21 +43,31 @@ export interface Inventory {
   desc: string | null;
   deliveryDate: Date;
   inboundDate: Date;
-  material?: Material;
-  stillage?: Stillage;
-  cell?: Cell;
+  material: Material;
+  stillage?: Stillage | null;
+  cell?: Cell | null;
   transactions?: Transaction[];
+  storage?: Storage | null;
+}
+
+export interface Storage {
+  id: number;
+  name: string;
+  inventories?: Inventory[];
 }
 
 export interface Material {
   id: number;
-  size_length: number;
-  size_height: number;
-  size_width: number;
-  weight: number;
+  size_length?: number | null;
+  size_height?: number | null;
+  size_width?: number | null;
+  weight?: number | null;
   type: string;
+  diameter?: number | null;
   lesto_code: string;
-  inventories: Inventory[];
+  desc?: string | null;
+  inventories?: Inventory[];
+  shape: string;
 }
 
 export interface Cell {
@@ -65,4 +79,5 @@ export interface Cell {
   size_width: number;
   max_weight: number;
   isolator: boolean;
+  inventories?: Inventory[];
 }

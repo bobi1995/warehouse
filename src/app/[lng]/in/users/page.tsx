@@ -3,6 +3,7 @@ import { useTranslation } from "@/app/i18n";
 import { auth } from "@/auth/auth";
 import { redirect } from "next/navigation";
 import UserTable from "@/components/in/users/user-table";
+import CreateUser from "@/components/in/users/create-user";
 
 interface UserPageParams {
   params: {
@@ -20,11 +21,12 @@ const UsersPage = async ({ params, searchParams }: UserPageParams) => {
   const query = searchParams?.query || "";
   const currentPage = Number(searchParams?.page) || 1;
 
-  if (!session || !session.user) {
-    return redirect("/login");
-  }
+  // if (!session || !session.user) {
+  //   return redirect("/login");
+  // }
   return (
     <div>
+      <CreateUser />
       <UserTable lng={params.lng} query={query} currentPage={currentPage} />
     </div>
   );

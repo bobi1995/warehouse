@@ -7,7 +7,7 @@ interface CellMatrixProps {
   shelves: number;
   columns: number;
   stillageId: number;
-  cells: Cell[];
+  cells?: Cell[];
 }
 
 const isSelected = (
@@ -46,7 +46,7 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
   shelves,
   columns,
   stillageId,
-  cells,
+  cells = [],
 }) => {
   const initialGrid = Array(shelves)
     .fill(null)
@@ -160,7 +160,7 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
                 {cellExists && (
                   <div>
                     <p>
-                      {cell.size_length}x{cell.size_height}x{cell.size_width}
+                      {cell.size_width}x{cell.size_length}x{cell.size_height}
                     </p>
                     <p>{cell.max_weight}кг</p>
                   </div>
@@ -170,7 +170,11 @@ const CellMatrix: React.FC<CellMatrixProps> = ({
           })}
         </div>
         {selectedCells.length > 0 && (
-          <CellForm selectedCells={selectedCells} stillageId={stillageId} />
+          <CellForm
+            selectedCells={selectedCells}
+            stillageId={stillageId}
+            setSelectedCells={setSelectedCells}
+          />
         )}
       </div>
     </div>

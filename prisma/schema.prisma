@@ -86,21 +86,26 @@ model Authenticator {
 
 model Material {
   id        Int       @id @default(autoincrement())
-  size_length Float
-  size_height Float
-  size_width  Float
-  weight    Float
+  size_length Float? //for cylinder and sheet
+  size_height Float? //height for square or circle sheets
+  size_width  Float? //only for sheet
+  weight    Float? //for 
+  diameter  Float? //for circle or cylinder
   type      String
+  desc      String?
   lesto_code String @unique
+  shape   String @default("sheet")
   inventories Inventory[]
+   transactions Transaction[]
 }
 
 
 model Inventory {
   id            Int       @id @default(autoincrement())
   materialId    Int
-  stillageId    Int
-  cellId        Int
+  stillageId    Int?
+  cellId        Int?
+  storageId     Int?
   lot           String
   order         String
   quan_dev      Int @default(0)
@@ -111,8 +116,9 @@ model Inventory {
   inboundDate   DateTime @default(now())
 
   material      Material   @relation(fields: [materialId], references: [id], onDelete: Cascade)
-  stillage      Stillage   @relation(fields: [stillageId], references: [id], onDelete: Cascade)
-  cell          Cell       @relation(fields: [cellId], references: [id], onDelete: Cascade)
+  stillage      Stillage?   @relation(fields: [stillageId], references: [id], onDelete: Cascade)
+  storage       Storage?   @relation(fields: [storageId], references: [id], onDelete: Cascade)
+  cell          Cell?       @relation(fields: [cellId], references: [id], onDelete: Cascade)
   transactions  Transaction[]
 }
 
@@ -121,9 +127,17 @@ model Stillage {
   name     String
   shelves  Int
   columns  Int
+  type    String @default("SS,ST,ZN,AL")
   cells    Cell[]
+  inventories Inventory[] 
+}
+
+model Storage {
+  id       Int       @id @default(autoincrement())
+  name     String
   inventories Inventory[]
 }
+
 
 model Cell {
   id          Int       @id @default(autoincrement())
@@ -140,12 +154,16 @@ model Cell {
 }
 
 model Transaction {
-  id          String    @id @default(cuid())
-  type        String
-  inventoryId Int
+  id          Int       @id @default(autoincrement())
+  type        String @default("inbound")
+  inventoryId Int?
   userId      String
   date        DateTime  @default(now())
+  materialId  Int       
+  quantity    Float     
 
-  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  inventory   Inventory? @relation(fields: [inventoryId], references: [id], onDelete: Restrict) 
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  material    Material   @relation(fields: [materialId], references: [id])
+
 }
