@@ -216,6 +216,10 @@ const StillageComponent = ({
         {storages.length > 0 && (
           <ChangeStorageBtn
             storages={storages}
+            email={email}
+            lesto_code = {material.lesto_code}
+            desc={ material.desc}
+         
             inventory={{
               quan_dev: parseInt(formData.broySOtk),
               quan_ok: parseInt(formData.broyBezOtk),
