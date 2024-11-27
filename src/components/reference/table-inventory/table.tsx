@@ -7,6 +7,7 @@ import moment from "moment";
 import EditInventory from "./edit-inventory";
 import RequestSummaryTable from "@/components/outbound/request-table";
 import { formatCellCode } from "@/utils/cell-code";
+import LabelPrint from "./label-print";
 
 export interface GroupedInventory {
   lesto_code: string;
@@ -194,7 +195,10 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
                   <tr key={inventory.id} className="bg-gray-50">
                     <td className="flex border px-4 py-4 sm:pl-6 break-words">
                       {type === "reference" && (
-                        <EditInventory data={inventory} />
+                        <div className="flex gap-4">
+                          <EditInventory data={inventory} />
+                          <LabelPrint data={inventory} />
+                        </div>
                       )}
                       {type === "outbound" && (
                         <div className="border px-4 py-4 sm:pl-6 min-w-32">

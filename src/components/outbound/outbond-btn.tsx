@@ -5,7 +5,6 @@ import { XMarkIcon } from "@heroicons/react/24/solid";
 import { outbondInventory } from "@/lib/inventory/action";
 import { toast } from "react-toastify";
 import { getErrorMessage } from "@/db/error-messages";
-
 interface RequestedQuantities {
   [key: string]: {
     quantity: number;
@@ -40,6 +39,7 @@ const OutbondBtn = ({
     if (outbounding_objects && outbounding_objects.length > 0) {
       try {
         await outbondInventory(outbounding_objects);
+
         setRequestedQuantities({});
         toast.success(`Успешно изписахте избраните материали`);
       } catch (error: any) {

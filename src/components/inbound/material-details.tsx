@@ -1,7 +1,6 @@
 import { Material } from "@/db/interfaces/types";
 import Image from "next/image";
 import React from "react";
-import MetalForm3D from "../general/3d/metal-3d";
 
 const MaterialDetails = ({ material }: { material: Material }) => {
   const getShape = (shape: string) => {
@@ -63,13 +62,6 @@ const MaterialDetails = ({ material }: { material: Material }) => {
             width={800}
             height={600}
           />
-          {/* <MetalForm3D
-            shape={material.shape}
-            diameter={material.diameter ?? undefined}
-            thickness={material.size_height ?? undefined}
-            length={material.size_length ?? undefined}
-            width={material.weight ?? undefined}
-          /> */}
         </div>
       </div>
     </div>

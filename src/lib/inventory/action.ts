@@ -2,6 +2,8 @@
 import { CreateInventory } from "@/db/interfaces/create-types";
 import prisma from "../prismaClient";
 import { revalidatePath } from "next/cache";
+import printLabel from "@/utils/printLabel";
+import labelBody from "@/db/label-body";
 
 export async function createInventory({
   cellId,
@@ -121,14 +123,18 @@ export async function outbondInventory(
   try {
     await Promise.all(
       outbounding_objects.map(async (obj) => {
-        await prisma.transaction.updateMany({
+        const inventory = await prisma.inventory.findUnique({
           where: {
-            inventoryId: obj.id,
+            id: obj.id,
           },
-          data: {
-            inventoryId: null,
+          include: {
+            material: true,
           },
         });
+        if (!inventory) {
+          throw new Error("INVENTORY_DELETE_FAILED");
+        }
+
         await prisma.transaction.create({
           data: {
             type: "outbound",
@@ -138,12 +144,60 @@ export async function outbondInventory(
             materialId: obj.materialId,
           },
         });
-
-        await prisma.inventory.delete({
-          where: {
-            id: obj.id,
-          },
-        });
+        //If there are no quantity left, delete the inventory
+        if (inventory.quan_ok + inventory.quan_dev - obj.quantity === 0) {
+          await prisma.transaction.updateMany({
+            where: {
+              inventoryId: obj.id,
+            },
+            data: {
+              inventoryId: null,
+            },
+          });
+          await prisma.inventory.delete({
+            where: {
+              id: obj.id,
+            },
+          });
+        } else {
+          //If there are still quantity left, update the inventory and print label
+          await prisma.inventory.update({
+            where: {
+              id: obj.id,
+            },
+            data: {
+              quan_dev: inventory.quan_dev
+                ? inventory.quan_dev - obj.quantity
+                : 0,
+              quan_ok:
+                inventory.quan_ok > 0 ? inventory.quan_ok - obj.quantity : 0,
+            },
+          });
+          await printLabel(
+            labelBody(
+              inventory.material?.lesto_code,
+              inventory.material?.desc,
+              inventory.order,
+              inventory.lot,
+              inventory.deliveryDate.toDateString(),
+              (inventory.quan_dev + inventory.quan_ok).toString(),
+              inventory.comment || "",
+              inventory.id.toString()
+            )
+          );
+        }
+        await printLabel(
+          labelBody(
+            inventory.material?.lesto_code,
+            inventory.material?.desc,
+            inventory.order,
+            inventory.lot,
+            inventory.deliveryDate.toDateString(),
+            obj.quantity.toString(),
+            inventory.comment || "",
+            inventory.id.toString()
+          )
+        );
       })
     );
 

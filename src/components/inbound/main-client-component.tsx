@@ -70,6 +70,9 @@ const MainClientComponent = ({
               <div className="flex justify-center">
                 <ChangeStorageBtn
                   storages={storages}
+                  lesto_code={selectedMaterial.lesto_code}
+                  desc={selectedMaterial.desc}
+                  email={email}
                   inventory={{
                     quan_dev: parseInt(formData.broySOtk),
                     quan_ok: parseInt(formData.broyBezOtk),

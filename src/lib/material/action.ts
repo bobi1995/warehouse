@@ -21,13 +21,13 @@ export async function createMaterial(figure: string, formData: FormData) {
     : 0;
 
   if (figure === "sheet" || figure === "bar") {
-    if (type === "Al") {
+    if (type === "AL") {
       weight = (2.78 * size_length * size_height * size_width) / (1000 * 1000);
     } else {
       weight = (7.9 * size_length * size_height * size_width) / (1000 * 1000);
     }
   } else if (figure === "cylinder") {
-    if (type === "Al") {
+    if (type === "AL") {
       weight =
         (2.78 * Math.PI * Math.pow(diameter / 2, 2) * size_length) /
         (1000 * 1000);
@@ -37,7 +37,7 @@ export async function createMaterial(figure: string, formData: FormData) {
         (1000 * 1000);
     }
   } else if (figure === "circle") {
-    if (type === "Al") {
+    if (type === "AL") {
       weight =
         (2.78 * Math.PI * Math.pow(diameter / 2, 2) * size_height) /
         (1000 * 1000);
@@ -59,6 +59,7 @@ export async function createMaterial(figure: string, formData: FormData) {
     diameter,
     shape: figure,
   };
+  console.log(rawFormData);
 
   try {
     const material = await prisma.material.create({
@@ -71,7 +72,6 @@ export async function createMaterial(figure: string, formData: FormData) {
     throw new Error("MATERIAL_CREATE_FAILED");
   }
 }
-
 export async function updateMaterial(
   figure: string,
   formData: FormData,
@@ -98,13 +98,13 @@ export async function updateMaterial(
     : 0;
 
   if (figure === "sheet" || figure === "bar") {
-    if (type === "Al") {
+    if (type === "AL") {
       weight = (2.78 * size_length * size_height * size_width) / (1000 * 1000);
     } else {
       weight = (7.9 * size_length * size_height * size_width) / (1000 * 1000);
     }
   } else if (figure === "cylinder") {
-    if (type === "Al") {
+    if (type === "AL") {
       weight =
         (2.78 * Math.PI * Math.pow(diameter / 2, 2) * size_length) /
         (1000 * 1000);
@@ -114,7 +114,7 @@ export async function updateMaterial(
         (1000 * 1000);
     }
   } else if (figure === "circle") {
-    if (type === "Al") {
+    if (type === "AL") {
       weight =
         (2.78 * Math.PI * Math.pow(diameter / 2, 2) * size_height) /
         (1000 * 1000);
@@ -134,7 +134,6 @@ export async function updateMaterial(
     lesto_code,
     desc,
     diameter,
-    quantity,
     shape: figure,
   };
   try {
@@ -147,6 +146,7 @@ export async function updateMaterial(
     revalidatePath("/material");
     return material;
   } catch (error) {
+    console.log(error);
     throw new Error("MATERIAL_UPDATE_FAILED");
   }
 }

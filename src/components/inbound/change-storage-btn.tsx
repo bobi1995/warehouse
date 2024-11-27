@@ -11,8 +11,8 @@ import labelBody from "@/db/label-body";
 
 interface ChangeStorageBtnProps {
   storages: Storage[];
-  lesto_code:string,
-  desc:string|null|undefined;
+  lesto_code: string;
+  desc: string | null | undefined;
   inventory: {
     quan_dev: number;
     quan_ok: number;
@@ -24,7 +24,7 @@ interface ChangeStorageBtnProps {
     inboundDate: Date;
   };
   setMaterial: (material: Material | null) => void;
-  email:string
+  email: string;
 }
 
 const ChangeStorageBtn: React.FC<ChangeStorageBtnProps> = ({
@@ -33,7 +33,7 @@ const ChangeStorageBtn: React.FC<ChangeStorageBtnProps> = ({
   setMaterial,
   email,
   lesto_code,
-  desc
+  desc,
 }) => {
   const {
     quan_dev,
@@ -55,7 +55,7 @@ const ChangeStorageBtn: React.FC<ChangeStorageBtnProps> = ({
   };
   const handleCreate = async () => {
     try {
-     const res= await createInventory({
+      const res = await createInventory({
         quan_dev,
         quan_ok,
         materialId,
@@ -65,23 +65,22 @@ const ChangeStorageBtn: React.FC<ChangeStorageBtnProps> = ({
         deliveryDate,
         inboundDate,
         storageId: storage?.id,
-        email
-      });      
+        email,
+      });
       setMaterial(null);
 
       await printLabel(
         labelBody(
-        lesto_code,
-       desc,
+          lesto_code,
+          desc,
           order,
           lot,
-        deliveryDate.toDateString(),
+          deliveryDate.toDateString(),
           (quan_dev + quan_ok).toString(),
           comment,
           res.inventory.id.toString()
         )
       );
-
 
       toast.success(`Успешно заскладихте материал в склад ${storage?.name}`);
     } catch (error: any) {
