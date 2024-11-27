@@ -4,6 +4,7 @@ import prisma from "../prismaClient";
 import { revalidatePath } from "next/cache";
 import printLabel from "@/utils/printLabel";
 import labelBody from "@/db/label-body";
+import printLabelWithUrl from "@/utils/printLabelWithUrl";
 
 export async function createInventory({
   cellId,
@@ -144,6 +145,7 @@ export async function outbondInventory(
             materialId: obj.materialId,
           },
         });
+
         //If there are no quantity left, delete the inventory
         if (inventory.quan_ok + inventory.quan_dev - obj.quantity === 0) {
           await prisma.transaction.updateMany({
@@ -161,6 +163,20 @@ export async function outbondInventory(
           });
         } else {
           //If there are still quantity left, update the inventory and print label
+
+          await printLabelWithUrl(
+            labelBody(
+              inventory.material?.lesto_code,
+              inventory.material?.desc,
+              inventory.order,
+              inventory.lot,
+              inventory.deliveryDate.toDateString(),
+              obj.quantity.toString(),
+              inventory.comment || "",
+              inventory.id.toString()
+            )
+          );
+
           await prisma.inventory.update({
             where: {
               id: obj.id,
@@ -173,7 +189,7 @@ export async function outbondInventory(
                 inventory.quan_ok > 0 ? inventory.quan_ok - obj.quantity : 0,
             },
           });
-          await printLabel(
+          await printLabelWithUrl(
             labelBody(
               inventory.material?.lesto_code,
               inventory.material?.desc,
@@ -186,18 +202,6 @@ export async function outbondInventory(
             )
           );
         }
-        await printLabel(
-          labelBody(
-            inventory.material?.lesto_code,
-            inventory.material?.desc,
-            inventory.order,
-            inventory.lot,
-            inventory.deliveryDate.toDateString(),
-            obj.quantity.toString(),
-            inventory.comment || "",
-            inventory.id.toString()
-          )
-        );
       })
     );
 
