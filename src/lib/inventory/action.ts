@@ -163,6 +163,18 @@ export async function outbondInventory(
           });
         } else {
           //If there are still quantity left, update the inventory and print label
+          await prisma.inventory.update({
+            where: {
+              id: obj.id,
+            },
+            data: {
+              quan_dev: inventory.quan_dev
+                ? inventory.quan_dev - obj.quantity
+                : 0,
+              quan_ok:
+                inventory.quan_ok > 0 ? inventory.quan_ok - obj.quantity : 0,
+            },
+          });
 
           await printLabelWithUrl(
             labelBody(
@@ -177,18 +189,6 @@ export async function outbondInventory(
             )
           );
 
-          await prisma.inventory.update({
-            where: {
-              id: obj.id,
-            },
-            data: {
-              quan_dev: inventory.quan_dev
-                ? inventory.quan_dev - obj.quantity
-                : 0,
-              quan_ok:
-                inventory.quan_ok > 0 ? inventory.quan_ok - obj.quantity : 0,
-            },
-          });
           await printLabelWithUrl(
             labelBody(
               inventory.material?.lesto_code,

@@ -12,9 +12,10 @@ export default async (zplBody: string) => {
       }
     );
 
-    return res;
+    return {
+      message: "Received text successfully",
+    };
   } catch (err: any) {
-    console.log("HERE ERROR!!!!");
     console.error("Error sending request:", err.message);
   }
 };
