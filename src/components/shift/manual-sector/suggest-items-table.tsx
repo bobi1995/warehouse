@@ -41,7 +41,7 @@ const SuggestItemsTable = ({ inventories }: { inventories: Inventory[] }) => {
         </thead>
         <tbody>
           {inventories.map((inventory) => (
-            <tr>
+            <tr key={inventory.id}>
               <td className="border px-4 py-4 sm:pl-6">
                 <button
                   onClick={() => selectInventory(inventory.id)}

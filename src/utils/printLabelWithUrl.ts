@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default async (zplBody: string) => {
   try {
-    const res = await axios.post(
+    const res = axios.post(
       `${process.env.SERVER}/api/label`,
       { text: zplBody }, // Wrap it inside a JSON object with a key like `text`
       {

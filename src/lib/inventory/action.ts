@@ -176,7 +176,7 @@ export async function outbondInventory(
             },
           });
 
-          await printLabelWithUrl(
+          printLabelWithUrl(
             labelBody(
               inventory.material?.lesto_code,
               inventory.material?.desc,
@@ -189,14 +189,18 @@ export async function outbondInventory(
             )
           );
 
-          await printLabelWithUrl(
+          printLabelWithUrl(
             labelBody(
               inventory.material?.lesto_code,
               inventory.material?.desc,
               inventory.order,
               inventory.lot,
               inventory.deliveryDate.toDateString(),
-              (inventory.quan_dev + inventory.quan_ok).toString(),
+              (
+                inventory.quan_dev +
+                inventory.quan_ok -
+                obj.quantity
+              ).toString(),
               inventory.comment || "",
               inventory.id.toString()
             )
@@ -229,6 +233,30 @@ export async function shiftInventory(
       data: {
         stillageId: newStillage,
         cellId: newCell,
+        storageId: null,
+      },
+    });
+    revalidatePath("/shift");
+    return {
+      success: true,
+      message: `Inventory rescheduled successfully`,
+    };
+  } catch (error) {
+    console.log(error);
+    throw new Error("INVENTORY_SHIFT_FAILED");
+  }
+}
+
+export async function shiftToStorage(inventoryId: number, storageId: number) {
+  try {
+    await prisma.inventory.update({
+      where: {
+        id: inventoryId,
+      },
+      data: {
+        storageId,
+        stillageId: null,
+        cellId: null,
       },
     });
     revalidatePath("/shift");

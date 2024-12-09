@@ -1,17 +1,30 @@
 "use client";
-import { Inventory } from "@/db/interfaces/types";
+import { Inventory, Stillage, Storage } from "@/db/interfaces/types";
 import { toast } from "react-toastify";
 import Stillage3D from "@/components/general/stillage-3d";
 import CellMatrix3d from "@/components/general/3d/cell-matrix";
 import { useState } from "react";
-import { shiftInventory } from "@/lib/inventory/action";
+import { shiftInventory, shiftToStorage } from "@/lib/inventory/action";
 import { getErrorMessage } from "@/db/error-messages";
 import InventoryTable from "./intentory-table";
 import { useSearchParams, usePathname, useRouter } from "next/navigation";
 import { formatCellCode } from "@/utils/cell-code";
+import ChangeStillageBtn from "@/components/inbound/change-stillage-btn";
+import ChangeStorage from "./change/change-storage";
+import { suggestCell } from "@/utils/suggestCell";
 
-const InventoryInfo = ({ inventory }: { inventory: Inventory }) => {
+const InventoryInfo = ({
+  inventory,
+  stillages,
+  storages,
+}: {
+  inventory: Inventory;
+  stillages: Stillage[];
+  storages: Storage[];
+}) => {
   const searchParams = useSearchParams();
+  const [stillage, setStillage] = useState(inventory.stillage);
+  const [storage, setStorage] = useState(inventory.storage);
 
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -25,13 +38,9 @@ const InventoryInfo = ({ inventory }: { inventory: Inventory }) => {
   });
 
   const handleShift = async () => {
-    if (selectedCell?.id && inventory.stillage?.id && inventory.id) {
-      try {
-        await shiftInventory(
-          inventory.id,
-          inventory.stillage.id,
-          selectedCell.id
-        );
+    try {
+      if (stillage?.id && selectedCell?.id) {
+        await shiftInventory(inventory.id, stillage.id, selectedCell.id);
         const params = new URLSearchParams(searchParams);
         params.delete("inventoryId");
         replace(`${pathname}?${params.toString()}`);
@@ -39,12 +48,21 @@ const InventoryInfo = ({ inventory }: { inventory: Inventory }) => {
           `Успешно преместихте ${
             inventory.material.lesto_code
           } в клетка ${formatCellCode(selectedCell.code)} на стелаж ${
-            inventory.stillage.name
+            stillage.name
           }`
         );
-      } catch (error: any) {
-        toast.error(getErrorMessage(error.message));
+      } else if (storage) {
+        console.log(storage.id);
+        await shiftToStorage(inventory.id, storage.id);
+        const params = new URLSearchParams(searchParams);
+        params.delete("inventoryId");
+        replace(`${pathname}?${params.toString()}`);
+        return toast.success(
+          `Успешно преместихте ${inventory.material.lesto_code} в склад ${inventory.storage?.name}`
+        );
       }
+    } catch (error: any) {
+      toast.error(getErrorMessage(error.message));
     }
   };
 
@@ -52,12 +70,12 @@ const InventoryInfo = ({ inventory }: { inventory: Inventory }) => {
     <div className="p-10 lg:flex justify-between ">
       <InventoryTable inventory={inventory} />
       <div className="flex justify-between lg:block">
-        {inventory.stillage && (
+        {stillage && (
           <CellMatrix3d
-            shelves={inventory?.stillage?.shelves}
-            columns={inventory.stillage?.columns}
-            cells={inventory.stillage?.cells ?? []}
-            stillageId={inventory.stillage?.id}
+            shelves={stillage?.shelves}
+            columns={stillage?.columns}
+            cells={stillage?.cells ?? []}
+            stillageId={stillage?.id}
             selectedCell={selectedCell}
             setSelectedCell={setSelectedCell}
             newWeight={
@@ -70,12 +88,12 @@ const InventoryInfo = ({ inventory }: { inventory: Inventory }) => {
         )}
       </div>
 
-      {inventory.stillage && inventory.cell ? (
+      {stillage && inventory.cell ? (
         <div className="w-full lg:w-1/3">
           <div className="h-96 flex lg:block">
             <Stillage3D
-              columns={inventory.stillage?.columns}
-              rows={inventory.stillage?.shelves}
+              columns={stillage?.columns}
+              rows={stillage?.shelves}
               selectedCell={selectedCell ? selectedCell : inventory.cell}
             />
             <div className="flex space-x-4 items-center bg-gray-100 p-4 rounded-lg shadow-md justify-around">
@@ -95,15 +113,48 @@ const InventoryInfo = ({ inventory }: { inventory: Inventory }) => {
           </div>
           <div className="text-center lg:mt-20">
             <button
-              disabled={inventory.cell?.id === selectedCell?.id}
               onClick={handleShift}
               className="w-52 bg-gradient-to-r from-green-300 to-green-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg border border-green-400 hover:from-green-400 hover:to-green-600 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
             >
-              Прехвърли
+              ПРЕХВЪРЛИ
             </button>
+
+            <ChangeStillageBtn
+              setStillage={setStillage}
+              stillage={stillage}
+              stillages={stillages}
+            />
+            <ChangeStorage
+              storage={storage}
+              setStorage={setStorage}
+              storages={storages}
+              setStillage={setStillage}
+            />
           </div>
         </div>
       ) : null}
+
+      {storage && (
+        <div className="text-center lg:mt-20">
+          <button
+            onClick={handleShift}
+            className="w-52 bg-gradient-to-r from-green-300 to-green-500 text-white font-bold py-4 px-8 rounded-lg shadow-lg border border-green-400 hover:from-green-400 hover:to-green-600 hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+          >
+            ПРЕХВЪРЛИ
+          </button>
+          <ChangeStorage
+            storage={storage}
+            setStorage={setStorage}
+            storages={storages}
+            setStillage={setStillage}
+          />
+          <ChangeStillageBtn
+            setStillage={setStillage}
+            stillage={stillage}
+            stillages={stillages}
+          />
+        </div>
+      )}
     </div>
   );
 };

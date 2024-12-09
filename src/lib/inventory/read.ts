@@ -27,7 +27,15 @@ export async function getInventory(id: number) {
       include: {
         stillage: {
           include: {
-            cells: true,
+            cells: {
+              include: {
+                inventories: {
+                  include: {
+                    material: true,
+                  },
+                },
+              },
+            },
           },
         },
         cell: true,
@@ -56,10 +64,18 @@ export async function searchInventories(
       include: {
         stillage: {
           include: {
-            cells: true,
+            cells: {
+              include: {
+                inventories: true,
+              },
+            },
           },
         },
-        cell: true,
+        cell: {
+          include: {
+            inventories: true,
+          },
+        },
         transactions: true,
         material: true,
         storage: true,

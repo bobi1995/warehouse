@@ -2,16 +2,21 @@
 import React, { useState } from "react";
 import ManualSector from "./manual-sector";
 import ScanSector from "./scan-sector";
-import { Inventory } from "@/db/interfaces/types";
+import { Inventory, Stillage, Storage } from "@/db/interfaces/types";
 import InventoryInfo from "./inventory/inventory-info";
 
 interface ToggleSectorsProps {
   inventory: Inventory | null;
+  stillages: Stillage[];
+  storages: Storage[];
 }
 
-const ToggleSectors: React.FC<ToggleSectorsProps> = ({ inventory }) => {
+const ToggleSectors: React.FC<ToggleSectorsProps> = ({
+  inventory,
+  stillages,
+  storages,
+}) => {
   const [showScan, setShowScan] = useState(true);
-
   const toggleSector = () => {
     setShowScan((prev) => !prev);
   };
@@ -34,7 +39,11 @@ const ToggleSectors: React.FC<ToggleSectorsProps> = ({ inventory }) => {
           </div>
         </>
       ) : (
-        <InventoryInfo inventory={inventory} />
+        <InventoryInfo
+          inventory={inventory}
+          stillages={stillages}
+          storages={storages}
+        />
       )}
     </div>
   );
