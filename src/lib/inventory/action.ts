@@ -119,9 +119,23 @@ export async function outbondInventory(
     id: number;
     materialId: number;
     quantity: number;
-  }[]
+  }[],
+  email?: string | null
 ) {
+  if (!email) {
+    throw new Error("USER_REQUIRED");
+  }
   try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+    });
+
+    if (!user) {
+      throw new Error("USER_REQUIRED");
+    }
+
     await Promise.all(
       outbounding_objects.map(async (obj) => {
         const inventory = await prisma.inventory.findUnique({
@@ -140,7 +154,7 @@ export async function outbondInventory(
           data: {
             type: "outbound",
             inventoryId: null,
-            userId: "cm2ocvb4e0000b818m018q8zp",
+            userId: user.id,
             quantity: obj.quantity,
             materialId: obj.materialId,
           },

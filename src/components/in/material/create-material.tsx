@@ -12,7 +12,7 @@ const CreateMaterial = ({ type }: { type: string }) => {
   const handleAction = async (formData: FormData) => {
     try {
       await createMaterial(type, formData);
-      toast.success(`Успешно създадохте стежаж ${name}`);
+      toast.success(`Успешно създадохте материал ${name}`);
       if (formRef.current) {
         formRef.current.reset();
       }

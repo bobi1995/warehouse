@@ -4,11 +4,17 @@ import prisma from "../prismaClient";
 
 const ITEMS_PER_PAGE = 10;
 
-export async function getTransactions(currentPage: number) {
+export async function getTransactions(currentPage: number, query: string) {
   const offset = (currentPage - 1) * ITEMS_PER_PAGE;
   unstable_noStore();
   try {
     return await prisma.transaction.findMany({
+      where: {
+        OR: [
+          { material: { lesto_code: { contains: query } } },
+          { material: { desc: { contains: query } } },
+        ],
+      },
       include: {
         material: true,
         user: true,
@@ -25,11 +31,14 @@ export async function getTransactions(currentPage: number) {
   }
 }
 
-export async function getCountTransactions() {
+export async function getCountTransactions(query: string) {
   try {
     const transactions = await prisma.transaction.count({
-      orderBy: {
-        date: "desc",
+      where: {
+        OR: [
+          { material: { lesto_code: { contains: query } } },
+          { material: { desc: { contains: query } } },
+        ],
       },
     });
     const totalPages = Math.ceil(Number(transactions) / ITEMS_PER_PAGE);

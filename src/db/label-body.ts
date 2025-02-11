@@ -26,7 +26,7 @@ export default (
 ^FO25,590^GB1155,2^FS   
 
 ^FO25,240^GB1,350,2^FS    
-^FO400,240^GB1,90,2^FS  
+^FO300,240^GB1,90,2^FS  
 ^FO500,330^GB1,90,2^FS  
 ^FO280,420^GB1,90,2^FS  
 ^FO1180,240^GB1,350,2^FS  
@@ -35,7 +35,7 @@ export default (
 ^FX Example content
 ^CFA,45
 ^FO35,285^FD${material}^FS
-^FO415,285^FD${desc}^FS
+^FO305,285^FD${desc}^FS
 ^FO35,375^FD${plavka}^FS
 ^FO515,375^FD${order}^FS
 ^FO35,465^FD${quantity} pcs^FS

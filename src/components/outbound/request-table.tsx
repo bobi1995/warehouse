@@ -13,11 +13,13 @@ export interface RequestSummaryProps {
     };
   };
   setRequestedQuantities: any;
+  email?: string | null;
 }
 
 const RequestSummaryTable: React.FC<RequestSummaryProps> = ({
   requestedQuantities,
   setRequestedQuantities,
+  email,
 }) => {
   return (
     <div className="mb-4 w-11/12 m-auto mt-5">
@@ -49,6 +51,7 @@ const RequestSummaryTable: React.FC<RequestSummaryProps> = ({
         <OutbondBtn
           requiredQuantities={requestedQuantities}
           setRequestedQuantities={setRequestedQuantities}
+          email={email}
         />
       </div>
     </div>

@@ -19,9 +19,11 @@ interface RequestedQuantities {
 const OutbondBtn = ({
   requiredQuantities,
   setRequestedQuantities,
+  email,
 }: {
   requiredQuantities: RequestedQuantities;
   setRequestedQuantities: any;
+  email?: string | null;
 }) => {
   const arrayOfObjects = Object.keys(requiredQuantities).map((key) => ({
     id: parseInt(key),
@@ -38,7 +40,7 @@ const OutbondBtn = ({
   const handleCreate = async () => {
     if (outbounding_objects && outbounding_objects.length > 0) {
       try {
-        await outbondInventory(outbounding_objects);
+        await outbondInventory(outbounding_objects, email);
 
         setRequestedQuantities({});
         toast.success(`Успешно изписахте избраните материали`);

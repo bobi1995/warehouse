@@ -54,11 +54,7 @@ export default async function Home({ params: { lng } }: Params) {
               href="/reference"
               Icon={PencilSquareIcon}
             />
-            <ScreenBtn
-              title="Ръчно етикиране"
-              href="/labeling"
-              Icon={EyeIcon}
-            />
+            <ScreenBtn title="Визуализация" href="/visual" Icon={EyeIcon} />
             <ScreenBtn
               title="История операции"
               href="/history"

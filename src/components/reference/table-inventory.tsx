@@ -5,6 +5,7 @@ import InventoryTable, { GroupedInventory } from "./table-inventory/table";
 import SearchUser from "../in/users/search-user";
 import Pagination from "../in/users/pagination";
 import itemsPerPage from "../general/items-per-page";
+import { auth } from "@/auth/auth";
 
 const groupInventories = (inventories: Inventory[]): GroupedInventory[] => {
   const grouped = inventories.reduce((acc, inventory) => {
@@ -43,6 +44,7 @@ const TableInventory = async ({
   type: "outbound" | "reference";
 }) => {
   const inventories = await getInventories();
+  const session = await auth();
   const groupedInventories = groupInventories(inventories as Inventory[]);
 
   const filteredInventories = groupedInventories.filter(
@@ -59,7 +61,11 @@ const TableInventory = async ({
       <div className="w-11/12 m-auto">
         <SearchUser placeholder="Търси по код, описание или партида..." />
       </div>
-      <InventoryTable groupedInventories={data} type={type} />
+      <InventoryTable
+        groupedInventories={data}
+        type={type}
+        email={session?.user?.email}
+      />
       <Pagination totalPages={totalPages} />
     </div>
   );

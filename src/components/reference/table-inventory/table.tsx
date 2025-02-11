@@ -21,11 +21,13 @@ export interface GroupedInventory {
 interface InventoryTableProps {
   groupedInventories: GroupedInventory[];
   type: "outbound" | "reference";
+  email?: string | null;
 }
 
 const InventoryTable: React.FC<InventoryTableProps> = ({
   groupedInventories,
   type,
+  email,
 }) => {
   const [openRows, setOpenRows] = useState<{ [key: string]: boolean }>({});
   const [requestedQuantities, setRequestedQuantities] = useState<{
@@ -84,6 +86,7 @@ const InventoryTable: React.FC<InventoryTableProps> = ({
         <RequestSummaryTable
           requestedQuantities={requestedQuantities}
           setRequestedQuantities={setRequestedQuantities}
+          email={email}
         />
       )}
       <table className={`w-11/12 border-collapse border ${table} `}>
