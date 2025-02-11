@@ -1,4 +1,3 @@
-import { InboxArrowDownIcon } from "@heroicons/react/24/solid";
 import React from "react";
 import clsx from "clsx";
 import Link from "next/link";
@@ -7,12 +6,14 @@ interface StyledBtnProps {
   title: string;
   transaction?: boolean;
   href: string;
+  Icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
 }
 
 const ScreenBtn: React.FC<StyledBtnProps> = ({
   title,
   transaction = false,
   href,
+  Icon,
 }) => {
   return (
     <Link
@@ -27,7 +28,7 @@ const ScreenBtn: React.FC<StyledBtnProps> = ({
       href={href}
     >
       <div className="">
-        <InboxArrowDownIcon className="w-8 h-8" />
+        <Icon className="w-8 h-8" />
       </div>
       <span className="uppercase">{title}</span>
     </Link>

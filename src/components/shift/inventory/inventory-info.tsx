@@ -36,6 +36,7 @@ const InventoryInfo = ({
     code: inventory.cell?.code ?? "",
     id: inventory.cell?.id ?? 0,
   });
+  console.log(selectedCell);
 
   const handleShift = async () => {
     try {
@@ -58,7 +59,7 @@ const InventoryInfo = ({
         params.delete("inventoryId");
         replace(`${pathname}?${params.toString()}`);
         return toast.success(
-          `Успешно преместихте ${inventory.material.lesto_code} в склад ${inventory.storage?.name}`
+          `Успешно преместихте ${inventory.material.lesto_code} в склад ${storage?.name}`
         );
       }
     } catch (error: any) {
@@ -88,19 +89,19 @@ const InventoryInfo = ({
         )}
       </div>
 
-      {stillage && inventory.cell ? (
+      {stillage && selectedCell ? (
         <div className="w-full lg:w-1/3">
           <div className="h-96 flex lg:block">
             <Stillage3D
               columns={stillage?.columns}
               rows={stillage?.shelves}
-              selectedCell={selectedCell ? selectedCell : inventory.cell}
+              selectedCell={selectedCell}
             />
             <div className="flex space-x-4 items-center bg-gray-100 p-4 rounded-lg shadow-md justify-around">
               <div className="text-gray-700 font-semibold">
                 Текущ:{" "}
                 <span className="text-blue-600 bg-blue-100 px-2 py-1 rounded">
-                  {formatCellCode(inventory.cell?.code)}
+                  {formatCellCode(selectedCell.code)}
                 </span>
               </div>
               <div className="text-gray-700 font-semibold">
@@ -134,7 +135,7 @@ const InventoryInfo = ({
         </div>
       ) : null}
 
-      {storage && (
+      {storage && !stillage && (
         <div className="text-center lg:mt-20">
           <button
             onClick={handleShift}

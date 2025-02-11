@@ -1,6 +1,17 @@
 import { Params } from "@/db/interfaces/params";
 import ScreenBtn from "@/components/home/screen-btn";
 import { auth } from "@/auth/auth";
+import {
+  InboxArrowDownIcon,
+  ArrowUpTrayIcon,
+  ArrowDownTrayIcon,
+  ArrowsUpDownIcon,
+  InboxStackIcon,
+  PencilSquareIcon,
+  ClipboardDocumentCheckIcon,
+  EyeIcon,
+  Square3Stack3DIcon,
+} from "@heroicons/react/24/solid";
 
 export default async function Home({ params: { lng } }: Params) {
   const session = await auth();
@@ -10,18 +21,56 @@ export default async function Home({ params: { lng } }: Params) {
       <div>
         <div className="md:flex justify-around">
           <div className="flex flex-col items-center w-full">
-            <ScreenBtn title="Заскладяване" transaction href="/inbound" />
-            <ScreenBtn title="Изписване" transaction href="/outbound" />
-            <ScreenBtn title="Разместване" transaction href="/shift" />
+            <ScreenBtn
+              title="Заскладяване"
+              transaction
+              href="/inbound"
+              Icon={ArrowDownTrayIcon}
+            />
+            <ScreenBtn
+              title="Изписване"
+              transaction
+              href="/outbound"
+              Icon={ArrowUpTrayIcon}
+            />
+            <ScreenBtn
+              title="Разместване"
+              transaction
+              href="/shift"
+              Icon={ArrowsUpDownIcon}
+            />
             {session ? (
-              <ScreenBtn title="Стелажи" transaction href="/stillage" />
+              <ScreenBtn
+                title="Стелажи"
+                transaction
+                href="/stillage"
+                Icon={InboxStackIcon}
+              />
             ) : null}
           </div>
           <div className="flex flex-col items-center w-full">
-            <ScreenBtn title="Справка и редакция" href="/reference" />
-            <ScreenBtn title="Ръчно етикиране" href="/labeling" />
-            <ScreenBtn title="История операции" href="/history" />
-            {session ? <ScreenBtn title="Материали" href="/material" /> : null}
+            <ScreenBtn
+              title="Справка и редакция"
+              href="/reference"
+              Icon={PencilSquareIcon}
+            />
+            <ScreenBtn
+              title="Ръчно етикиране"
+              href="/labeling"
+              Icon={EyeIcon}
+            />
+            <ScreenBtn
+              title="История операции"
+              href="/history"
+              Icon={ClipboardDocumentCheckIcon}
+            />
+            {session ? (
+              <ScreenBtn
+                title="Материали"
+                href="/material"
+                Icon={Square3Stack3DIcon}
+              />
+            ) : null}
           </div>
         </div>
       </div>
