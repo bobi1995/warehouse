@@ -42,7 +42,7 @@ const CreateMaterial = ({ type }: { type: string }) => {
             required
           >
             <option value="SS">SS</option>
-            <option value="SS">ST</option>
+            <option value="ST">ST</option>
             <option value="ZN">ZN</option>
             <option value="AL">AL</option>
           </select>
