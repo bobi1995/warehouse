@@ -10,7 +10,6 @@ const LabelingPage = async () => {
 
   return (
     <div>
-      <PageBackComponent />
       <ChooseStillage stillages={stillages} />
     </div>
   );

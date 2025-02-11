@@ -91,7 +91,7 @@ const CellMatrix3d: React.FC<CellMatrixProps> = ({
   );
   useEffect(() => {
     setGrid(populateGridWithCells(initialGrid, cells));
-  }, [cells]);
+  }, [cells, initialGrid]);
 
   return (
     <div className="w-full mt-3">

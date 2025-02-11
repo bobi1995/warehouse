@@ -64,10 +64,10 @@ const StillageDisplay: React.FC<StillageDisplayProps> = ({
                 {cell.isolator && "(ИЗОЛАТОР)"}
               </h3>
               <table
-                className={clsx(
-                  "min-w-full bg-white text-sm",
-                  cell.isolator && "bg-red-100"
-                )}
+                className="min-w-full bg-white text-sm"
+                style={{
+                  backgroundColor: cell.isolator ? "#FFC0CB" : "white",
+                }}
               >
                 <thead>
                   <tr>
